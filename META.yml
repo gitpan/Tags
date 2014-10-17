@@ -1,11 +1,12 @@
 ---
 abstract: 'Structure oriented SGML/XML/HTML/etc. elements manipulation.'
 author:
-  - 'Michal Špaček <skim@cpan.org>'
+  - 'Michal Spacek <skim@cpan.org>'
 build_requires:
   English: 0
   ExtUtils::MakeMaker: 6.36
   File::Object: 0.03
+  IO::Scalar: 0
   Test::More: 0
   Test::NoWarnings: 0
   Test::Pod: 0
@@ -36,4 +37,4 @@ resources:
   homepage: https://github.com/tupinek/Tags
   license: http://opensource.org/licenses/bsd-license.php
   repository: git://github.com/tupinek/Tags
-version: 0.01
+version: '0.02'

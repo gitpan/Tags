@@ -18,7 +18,7 @@ Readonly::Scalar my $LAST_INDEX => -1;
 Readonly::Scalar my $SPACE => q{ };
 
 # Version.
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 # Resets internal variables.
 sub reset {
@@ -369,7 +369,7 @@ __END__
  $tags->put(['b', 'tag']);
  my @open_tags = $tags->open_tags;
  $tags->finalize;
- $tags->flush;
+ $tags->flush($reset_flag);
  $tags->reset;
 
 =head1 METHODS
@@ -638,10 +638,10 @@ L<http://skim.cz/>
 
 =head1 LICENSE AND COPYRIGHT
 
-BSD license.
+BSD 2-Clause License
 
 =head1 VERSION
 
-0.02
+0.03
 
 =cut

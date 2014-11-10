@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 # Version.
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 1;
 
@@ -68,7 +68,7 @@ L<http://skim.cz>
 
 =head1 LICENSE AND COPYRIGHT
 
-BSD license.
+BSD 2-Clause License
 
 =head1 VERSION 
 

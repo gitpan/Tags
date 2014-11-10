@@ -6,7 +6,6 @@ use warnings;
 
 # Modules.
 use Class::Utils qw(set_params);
-use Error::Pure qw(err);
 use List::MoreUtils qw(any);
 use Readonly;
 
@@ -14,7 +13,7 @@ use Readonly;
 Readonly::Scalar my $LAST_INDEX => -1;
 
 # Version.
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 # Constructor.
 sub new {
@@ -117,8 +116,14 @@ __END__
 =head1 SYNOPSIS
 
  use Tags::Utils::Preserve;
- my $t = Tags::Utils::Preserve->new(%params);
- # TODO
+ my $obj = Tags::Utils::Preserve->new(%params);
+ my $preserved_flag = $obj->begin;
+ my ($preserver_flag, $prev_preserved_flag) = $obj->begin;
+ my $preserved_flag = $obj->end;
+ my ($preserved_flag, $prev_preserved_flag) = $obj->end;
+ $obj->get;
+ $obj->reset;
+ $obj->save_previous;
 
 =head1 METHODS
 
@@ -160,20 +165,60 @@ __END__
 
 =head1 ERRORS
 
- Mine:
-         TODO
- 
- From Class::Utils::set_params():
-         Unknown parameter '%s'.
+ new():
+         From Class::Utils::set_params():
+                 Unknown parameter '%s'.
 
 =head1 EXAMPLE
 
- TODO
+ # Pragmas.
+ use strict;
+ use warnings;
+
+ # Modules.
+ use Tags::Utils::Preserve;
+
+ # Begin element helper.
+ sub begin_helper {
+         my ($pr, $tag) = @_;
+         print "TAG: $tag ";
+         my ($pre, $pre_pre) = $pr->begin($tag);
+         print "PRESERVED: $pre PREVIOUS PRESERVED: $pre_pre\n";
+ }
+ 
+ # End element helper.
+ sub end_helper {
+         my ($pr, $tag) = @_;
+         print "ENDTAG: $tag ";
+         my ($pre, $pre_pre) = $pr->end($tag);
+         print "PRESERVED: $pre PREVIOUS PRESERVED: $pre_pre\n";
+ 
+ }
+ 
+ # Object.
+ my $pr = Tags::Utils::Preserve->new(
+         'preserved' => ['tag']
+ );
+ 
+ # Process.
+ begin_helper($pr, 'foo');
+ begin_helper($pr, 'tag');
+ begin_helper($pr, 'foo');
+ end_helper($pr, 'foo');
+ end_helper($pr, 'tag');
+ end_helper($pr, 'foo');
+
+ # Output:
+ # TAG: foo PRESERVED: 0 PREVIOUS PRESERVED: 0
+ # TAG: tag PRESERVED: 1 PREVIOUS PRESERVED: 0
+ # TAG: foo PRESERVED: 1 PREVIOUS PRESERVED: 1
+ # ENDTAG: foo PRESERVED: 1 PREVIOUS PRESERVED: 1
+ # ENDTAG: tag PRESERVED: 0 PREVIOUS PRESERVED: 1
+ # ENDTAG: foo PRESERVED: 0 PREVIOUS PRESERVED: 0
 
 =head1 DEPENDENCIES
 
 L<Class::Utils>,
-L<Error::Pure>,
 L<List::MoreUtils>,
 L<Readonly>.
 
@@ -201,10 +246,10 @@ L<http://skim.cz/>
 
 =head1 LICENSE AND COPYRIGHT
 
-BSD license.
+BSD 2-Clause License
 
 =head1 VERSION
 
-0.02
+0.03
 
 =cut
